@@ -8,7 +8,9 @@
 </head>
 <body>
   <div>Seguimiento<div/>
-    <a href="www.google.com" onclick='ClickCampanha(this,"event1","camp1",null)'>BOTON</a>
+    <button onclick='ClickCampanha("www.google.com.pe","event1","camp1",null)'>
+      Boton
+    </button>
 </body>
 </html>
 <script type="text/javascript">
@@ -69,7 +71,7 @@
          campanha  = campanha.replaceAll("-","0")
          console.log(evento.toLowerCase()+ campanha.toLowerCase())
          Friendlyname =  evento.toLowerCase()+ campanha.toLowerCase()
-        return ewt.trackLink({ name: Friendlyname, type: 'click', link: ruta });
+        return ewt.track({ name: Friendlyname, type: 'click', link: ruta });
    }
 
   function SetCookiebymail(dominio,ruta,evento,campanha,mail=null){

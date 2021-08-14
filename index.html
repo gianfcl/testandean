@@ -7,3 +7,115 @@
   <div>Seguimiento<div/>
 </body>
 </html>
+<script type="text/javascript">
+  console.log(window.location.hostname);
+  ///////////////////////FUNCIONES COMPLEMENTARIAS
+  function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1, c.length);
+      }
+      if (c.indexOf(nameEQ) === 0) {
+        return c.substring(nameEQ.length, c.length);
+      }
+    }
+    return null;
+  }
+
+  function create_UUID(){
+      var dt = new Date().getTime();
+      var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = (dt + Math.random()*16)%16 | 0;
+          dt = Math.floor(dt/16);
+          return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+      });
+      return uuid;
+  }
+    
+  function setCookie(name,value,days,dominio) {
+      var expires = "";
+      if (days) {
+          var date = new Date();
+          date.setTime(date.getTime() + (days*24*60*60*1000));
+          expires = "; expires=" + date.toUTCString();
+      }
+    var domain="";
+      if(dominio){
+          domain = ";domain="+dominio;
+      }
+      document.cookie = name + "=" + (value || "")  + expires + domain + "; path=/";
+  }
+  ///////////////////////FUNCIONES DE SEGUIMIENTO
+
+  function SeguimientoLinks(ruta,evento,campanha){
+         //Damos formato al valor del evento
+         //Los eventos de preferencia en minusculas, sin tildes y si tiene simbolos como +,- u otros especiales evitarlos
+         evento = evento.replaceAll(" ","")
+         evento = evento.replaceAll(".","")
+         evento = evento.replaceAll("+","1")
+         evento = evento.replaceAll("-","0")
+
+         //Damos formato al valor de la campaña
+         campanha = campanha.replaceAll(" ","")
+         campanha = campanha.replaceAll(".","")
+         campanha  = campanha.replaceAll("+","1")
+         campanha  = campanha.replaceAll("-","0")
+
+         Friendlyname =  evento.toLowerCase()+ campanha.toLowerCase()
+        return ewt.trackLink({ name: Friendlyname, type: 'click', link: ruta });
+   }
+
+  function SetCookiebymail(dominio,ruta,evento,campanha,mail=null){
+    var datos = {}
+    if(mail){
+      datos["mail"]=mail;
+    }
+    // console.log(JSON.stringify(datos));
+    if(mail){
+      $.ajax({
+        headers: {  'Content-Type': 'application/json' },
+        type:"POST",
+        url: "https://q9sfa82jn8.execute-api.us-east-2.amazonaws.com/EntelAddContactAcoustict",
+        dataType : 'json',
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(datos),
+        success:function(a,b){
+          console.log(a['spUserId']);
+          console.log(a['spRecipientId']);
+          var rid = 'ODIxNDMwODM2S0';
+          var jid = '821430836';
+          var mid = '2037711';
+          setCookie("com.silverpop.iMA.uid",encodeURIComponent(a['spUserId']),7,dominio);
+          setCookie("com.silverpop.iMAWebCookie",encodeURIComponent(create_UUID()),7,dominio);
+          setCookie("com.silverpop.iMA.rid",encodeURIComponent(rid),7,dominio);
+          setCookie("com.silverpop.iMA.jid",encodeURIComponent(jid),7,dominio);
+          setCookie("com.silverpop.iMA.mid",encodeURIComponent(mid),7,dominio);
+          SeguimientoLinks(ruta, evento, campanha );
+        },
+        error:function(a,b){
+          console.log('error');
+          console.log(a);
+          console.log(b);
+        }
+      });
+    }else{
+      SeguimientoLinks(ruta, evento, campanha );
+    }
+  }
+  /*
+  ruta: el link relacionado al boton que sale en el excel compartido
+  evento: nombre del evento1, evento2, evento3, evento4 o evento 5 que adjuntaron en el excel compartido
+  campanha: campaña que muestran en el excel
+  correo: del usuario que genera el evento
+  */
+  
+  //FUNCION QUE DEBEN LLAMAR AL HACER UN CLICK
+  function ClickCampanha(ruta,evento,campanha,correo=null) {
+    var dominio = "webtest.entel.pe"; // ESTE VALOR VARIA DEPENDIENDO DEL DOMINIO A UTILIZAR
+    SetCookiebymail(dominio,ruta,evento,campanha,,correo);
+  }
+</script>

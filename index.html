@@ -58,7 +58,7 @@
 
   function SeguimientoLinks(ruta,evento,campanha){
          //Damos formato al valor del evento
-         //Los eventos de preferencia en minusculas, sin tildes y si tiene simbolos como +,- u otros especiales evitarlos
+         //Los eventos en minusculas, sin tildes y si tiene simbolos como +,- u otros especiales evitarlos
          evento = evento.replaceAll(" ","")
          evento = evento.replaceAll(".","")
          evento = evento.replaceAll("+","1")
@@ -71,7 +71,7 @@
          campanha  = campanha.replaceAll("-","0")
          console.log(evento.toLowerCase()+ campanha.toLowerCase())
          Friendlyname =  evento.toLowerCase()+ campanha.toLowerCase()
-        return ewt.track({ name: Friendlyname, type: 'click', link: ruta });
+        return ewt.trackLink({ name: Friendlyname, type: 'click', link: ruta });
    }
 
   function SetCookiebymail(dominio,ruta,evento,campanha,mail=null){
@@ -121,7 +121,7 @@
   
   //FUNCION QUE DEBEN LLAMAR AL HACER UN CLICK
   function ClickCampanha(ruta,evento,campanha,correo=null) {
-    var dominio = "webtest.entel.pe"; // ESTE VALOR VARIA DEPENDIENDO DEL DOMINIO A UTILIZAR
+    //var dominio = "webtest.entel.pe"; // ESTE VALOR VARIA DEPENDIENDO DEL DOMINIO A UTILIZAR
     var dominio = window.location.hostname
     SetCookiebymail(dominio,ruta,evento,campanha,correo);
   }

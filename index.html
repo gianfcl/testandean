@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>TESTANDEAN</title>
+	<title>TEST-ANDEAN</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <meta name="com.silverpop.brandeddomains" content="www.pages09.net,entel.pe,gianfcl.github.io,portalpreprod.entel.pe,webtest.entel.pe" />
+  <script src="http://contentz.mkt91.net/lp/static/js/iMAWebCookie.js?5aa47e7d-1761a2f2f57-2baacb7739ee1c16a824f9d47c8a8b8b&h=www.pages09.net" type="text/javascript"></script>
 </head>
 <body>
   <div>Seguimiento<div/>
+    <button onclick='ClickCampanha("www.google.com.pe","event1","camp1","gcumpal@andeansoft.com")'>
+      Boton
+    </button>
 </body>
 </html>
 <script type="text/javascript">
-  console.log(window.location.hostname);
+  // console.log(window.location.hostname);
   ///////////////////////FUNCIONES COMPLEMENTARIAS
   function getCookie(name) {
     var nameEQ = name + "=";
@@ -63,7 +69,7 @@
          campanha = campanha.replaceAll(".","")
          campanha  = campanha.replaceAll("+","1")
          campanha  = campanha.replaceAll("-","0")
-
+         console.log(evento.toLowerCase()+ campanha.toLowerCase())
          Friendlyname =  evento.toLowerCase()+ campanha.toLowerCase()
         return ewt.trackLink({ name: Friendlyname, type: 'click', link: ruta });
    }
@@ -116,6 +122,7 @@
   //FUNCION QUE DEBEN LLAMAR AL HACER UN CLICK
   function ClickCampanha(ruta,evento,campanha,correo=null) {
     var dominio = "webtest.entel.pe"; // ESTE VALOR VARIA DEPENDIENDO DEL DOMINIO A UTILIZAR
+    var dominio = window.location.hostname
     SetCookiebymail(dominio,ruta,evento,campanha,correo);
   }
 </script>
